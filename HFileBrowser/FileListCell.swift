@@ -59,7 +59,6 @@ class FileListCell: UITableViewCell {
     func setCell(path:String) {
         self.imageView?.image = getCoverOfFile(path)
         self.textLabel?.text = FileHelper().getFileName(path)
-//        self.textLabel?.textColor = UIColor(red: 60, green: 79, blue: 94, alpha: 1.0)
         self.textLabel?.textColor = UIColor.blackColor()
         self.textLabel?.font = UIFont.systemFontOfSize(16)
     }
@@ -68,18 +67,18 @@ class FileListCell: UITableViewCell {
         let type = FileHelper().getFileType(path)
         switch type {
         case FileType.Folder:
-            return UIImage(named: "folderIcon")!
+            return HFileBrowserAssets.folderIcon
+            
         case FileType.Image:
             if let image = UIImage(contentsOfFile:path) {
                 return image
             }
-            break
         case FileType.Video:
             return getCoverOfVideo(path)
         case FileType.Text:
-            return UIImage(named: "textIcon")!
+            return HFileBrowserAssets.textIcon
         default:
-            return UIImage(named: "unknownTypeIcon")!
+            return HFileBrowserAssets.unknownTypeIcon
         }
         return UIImage()
     }
