@@ -31,7 +31,12 @@ public class HFileBrowser: UIViewController {
     
     public init(path:String,frame:CGRect) {
         super.init(nibName: nil, bundle: nil)
-        self.path = path
+        self.view.frame = frame
+        if FileHelper().isFileExist(path) {
+            self.path = path
+        }else{
+            self.path = NSHomeDirectory()
+        }
         do{
             try files = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path)
         }catch{
