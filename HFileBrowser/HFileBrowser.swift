@@ -39,18 +39,16 @@ public class HFileBrowser: UIViewController {
         }
         do{
             try files = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path)
+            reloadTableView()
         }catch{
             
         }
-        //TO DO : sort files
     }
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-
     public override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -60,6 +58,14 @@ public class HFileBrowser: UIViewController {
         self.navigationItem.title = FileHelper().getFileName(path)
         tableView.registerClass(FileListCell.self, forCellReuseIdentifier: FileListCell.CellIdentifier)
         emptyLabel.frame = CGRectMake(0, HScreenHeight/2 - 20, HScreenWidth, 20)
+    }
+    
+    override public func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func reloadTableView(){
         if files.count == 0 {
             emptyLabel.hidden = false
         }else{
@@ -67,12 +73,6 @@ public class HFileBrowser: UIViewController {
         }
         tableView.reloadData()
     }
-
-    override public func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 
 extension HFileBrowser:UITableViewDelegate{
