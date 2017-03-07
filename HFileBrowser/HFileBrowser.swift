@@ -37,6 +37,7 @@ public class HFileBrowser: UIViewController {
         }else{
             self.path = NSHomeDirectory()
         }
+        navigationItem.title = FileHelper().getFileName(path)
         do{
             try files = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path)
             reloadTableView()
@@ -51,7 +52,6 @@ public class HFileBrowser: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = FileHelper().getFileName(self.path)
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
