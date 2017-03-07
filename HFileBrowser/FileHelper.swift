@@ -19,7 +19,7 @@ enum FileType:String {
 class FileHelper: NSObject {
     let supportImageTypes = ["png","tif","jpg","jpeg","gif","cur","bmp"]
     let supportVideoTpyes = ["mp4","avi","wmv","3gp","mov"]
-    let supportTextTypes = ["txt","plist","xcconfig"]
+    let supportTextTypes = ["txt","plist","xcconfig","html"]
     
     var fileManager = NSFileManager.defaultManager()
     func isDirectory(path:String) -> Bool{

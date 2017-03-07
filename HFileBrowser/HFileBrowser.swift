@@ -92,7 +92,7 @@ extension HFileBrowser:UITableViewDelegate{
                 playerVC.player = AVPlayer.init(playerItem: AVPlayerItem(URL: NSURL(fileURLWithPath: "\(self.path)/\(path)")))
                 navigationController?.pushViewController(playerVC, animated: true)
             }else{
-                navigationController?.pushViewController(UnsupportPreviewController(), animated: true)
+                navigationController?.pushViewController(UnsupportPreviewController(path:"\(self.path)/\(path)"), animated: true)
             }
         }
     }

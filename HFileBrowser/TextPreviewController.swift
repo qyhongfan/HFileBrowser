@@ -13,6 +13,7 @@ class TextPreviewController: UIViewController {
     var textView :UITextView = {
         var view = UITextView()
         view.textColor = UIColor.blackColor()
+        view.editable = false
         return view
     }()
     
@@ -27,6 +28,7 @@ class TextPreviewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: .Plain, target: self, action: #selector(onEdit))
         textView.frame = self.view.frame
         view.addSubview(textView)
         let type = FileHelper().getFilePathExtension(filePath).lowercaseString
@@ -43,21 +45,34 @@ class TextPreviewController: UIViewController {
             textView.text = text
         }
     }
+    
+    func onEdit() {
+        textView.editable = true
+         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .Plain, target: self, action: #selector(onSave))
+    }
+    
+    func onSave() {
+        textView.editable = false
+        do {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: .Plain, target: self, action: #selector(onEdit))
+            try textView.text.writeToFile(self.filePath, atomically: true, encoding: NSUTF8StringEncoding)
+        } catch let error as NSError {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .Plain, target: self, action: #selector(onSave))
+            let alertController = UIAlertController(title: "错误",message: "\(error.description)",preferredStyle: .Alert)
+            let errorAction = UIAlertAction(title: "知道啦", style: .Default, handler: nil)
+            alertController.addAction(errorAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        let alertController = UIAlertController(title: "",message: "保存成功",preferredStyle: .Alert)
+        let sureAction = UIAlertAction(title: "确定", style: .Default, handler: nil)
+        alertController.addAction(sureAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
