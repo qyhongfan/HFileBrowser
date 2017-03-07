@@ -51,6 +51,7 @@ public class HFileBrowser: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = FileHelper().getFileName(self.path)
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
