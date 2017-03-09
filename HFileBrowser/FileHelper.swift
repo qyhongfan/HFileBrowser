@@ -21,21 +21,21 @@ class FileHelper: NSObject {
     let supportVideoTpyes = ["mp4","avi","wmv","3gp","mov"]
     let supportTextTypes = ["txt","plist","xcconfig","html","json"]
     
-    var fileManager = NSFileManager.defaultManager()
-    func isDirectory(path:String) -> Bool{
+    var fileManager = FileManager.default
+    func isDirectory(_ path:String) -> Bool{
         var isDir = ObjCBool(false)
-        _ = fileManager.fileExistsAtPath(path, isDirectory: &isDir)
+        _ = fileManager.fileExists(atPath: path, isDirectory: &isDir)
         return isDir.boolValue
     }
     
     
-    func isFileExist(path:String) -> Bool {
-        return fileManager.fileExistsAtPath(path)
+    func isFileExist(_ path:String) -> Bool {
+        return fileManager.fileExists(atPath: path)
     }
     
-    func getSubFiles(path:String) -> [String] {
+    func getSubFiles(_ path:String) -> [String] {
         if isDirectory(path) {
-            if let fileArray = fileManager.subpathsAtPath(path){
+            if let fileArray = fileManager.subpaths(atPath: path){
                 return fileArray
             }else{
                 return [String]()
@@ -45,12 +45,12 @@ class FileHelper: NSObject {
         }
     }
     
-    func getFileType(path:String) -> FileType {
+    func getFileType(_ path:String) -> FileType {
         if isFileExist(path) {
             if isDirectory(path) {
                 return FileType.Folder
             }else{
-                let name = getFileName(path).lowercaseString as NSString
+                let name = getFileName(path).lowercased() as NSString
                 let exten = name.pathExtension
                 
                 if supportImageTypes.contains(exten) {
@@ -67,11 +67,11 @@ class FileHelper: NSObject {
         return FileType.None
     }
     
-    func getSizeOfFile(path:String) -> Float {
+    func getSizeOfFile(_ path:String) -> Float {
         var fileSize:Float = 0.0
-        if fileManager.fileExistsAtPath(path) {
+        if fileManager.fileExists(atPath: path) {
             do {
-                if let attr: NSDictionary = try fileManager.attributesOfItemAtPath(path) {
+                if let attr: NSDictionary = try fileManager.attributesOfItem(atPath: path) as NSDictionary? {
                     fileSize = Float(attr.fileSize())
                 }
             } catch {
@@ -80,17 +80,17 @@ class FileHelper: NSObject {
         return fileSize;
     }
     
-    func getSizeOfDirectory(path:String) -> Float {
+    func getSizeOfDirectory(_ path:String) -> Float {
         if path.characters.count == 0 {
             return 0
         }
 
-        if !fileManager.fileExistsAtPath(path){
+        if !fileManager.fileExists(atPath: path){
             return 0
         }
         var fileSize:Float = 0.0
         do {
-            let files = try fileManager.contentsOfDirectoryAtPath(path)
+            let files = try fileManager.contentsOfDirectory(atPath: path)
             for file in files {
                 fileSize = fileSize + getSizeOfFile(file)
             }
@@ -99,9 +99,9 @@ class FileHelper: NSObject {
         return fileSize
     }
     
-    func deleteFile(path:String) -> Bool {
+    func deleteFile(_ path:String) -> Bool {
         if isDirectory(path) {  //folder
-            let fileArray = fileManager.subpathsAtPath(path)
+            let fileArray = fileManager.subpaths(atPath: path)
             if let fileArrayTmp = fileArray {
                 for pa in fileArrayTmp {
                     if !deleteFileAtPath(pa){
@@ -117,9 +117,9 @@ class FileHelper: NSObject {
         }
         return false
     }
-    func deleteFileAtPath(path:String) -> Bool{
+    func deleteFileAtPath(_ path:String) -> Bool{
         do {
-            try fileManager.removeItemAtPath(path)
+            try fileManager.removeItem(atPath: path)
         }
         catch{
             return false
@@ -127,12 +127,12 @@ class FileHelper: NSObject {
         return true
     }
     
-    func getFileName(path:String) ->String{
+    func getFileName(_ path:String) ->String{
         let temp = path as NSString
         return temp.lastPathComponent
     }
     
-    func getFilePathExtension(path:String) -> String {
+    func getFilePathExtension(_ path:String) -> String {
         if isDirectory(path) {
             return ""
         }else{

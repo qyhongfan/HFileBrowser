@@ -9,13 +9,13 @@
 import UIKit
 
 class AlbumView: UIView,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,AlbumViewDelegate{
-    var indexPath: NSIndexPath!
+    var indexPath: IndexPath!
     var collectionView:UICollectionView!
     let identifier = "Cell"
     var filePath = ""
     
     init(path:String) {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         self.filePath = path
     }
     
@@ -30,33 +30,33 @@ class AlbumView: UIView,UICollectionViewDataSource,UICollectionViewDelegate,UICo
     func initLayout() {
         if(collectionView != nil){ return }
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = UICollectionViewScrollDirection.Horizontal
+        flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
         flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 0
         collectionView = UICollectionView(frame: self.frame, collectionViewLayout: flowLayout)
-        collectionView.backgroundColor = UIColor.clearColor()//背景色为透明
-        collectionView.pagingEnabled = true//每次滚一页
+        collectionView.backgroundColor = UIColor.clear//背景色为透明
+        collectionView.isPagingEnabled = true//每次滚一页
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.registerClass(AlbumViewCell.self, forCellWithReuseIdentifier: identifier)
+        collectionView.register(AlbumViewCell.self, forCellWithReuseIdentifier: identifier)
         self.addSubview(collectionView)
         
         if(indexPath != nil){
-            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+            collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.centeredHorizontally, animated: false)
         }
     }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         return 1
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize{
-        return CGSizeMake(self.frame.size.width, self.frame.size.height)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
+        return CGSize(width: self.frame.size.width, height: self.frame.size.height)
     }
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell{
-        let cell: AlbumViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! AlbumViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
+        let cell: AlbumViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! AlbumViewCell
         cell.setData(filePath)
         cell.delegate = self
         return cell
@@ -78,7 +78,7 @@ class AlbumViewCell: UICollectionViewCell ,UIScrollViewDelegate{
         
         vImage = UIImageView()
         vImage.frame.size = frame.size
-        vImage.contentMode = UIViewContentMode.ScaleAspectFit
+        vImage.contentMode = UIViewContentMode.scaleAspectFit
         
         vScrollView = UIScrollView()
         vScrollView.frame.size = frame.size
@@ -90,23 +90,23 @@ class AlbumViewCell: UICollectionViewCell ,UIScrollViewDelegate{
         vScrollView.showsVerticalScrollIndicator = false
         vScrollView.showsHorizontalScrollIndicator = false
         //添加单击
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "scrollViewTapped:")
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(AlbumViewCell.scrollViewTapped(_:)))
         vScrollView.addGestureRecognizer(tapRecognizer)
         self.addSubview(vScrollView)
     }
     
-    func setData(path:String) {
+    func setData(_ path:String) {
         vScrollView.zoomScale = 1
         vImage.image = UIImage(contentsOfFile:path)
     }
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return vImage
     }
     //缩放触发
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centerScrollViewContents()//缩小图片的时候把图片设置到scrollview中间
     }
     func centerScrollViewContents() {
@@ -127,7 +127,7 @@ class AlbumViewCell: UICollectionViewCell ,UIScrollViewDelegate{
         
         vImage.frame = contentsFrame
     }
-    func scrollViewTapped(recognizer: UITapGestureRecognizer) {
+    func scrollViewTapped(_ recognizer: UITapGestureRecognizer) {
         //单击回调
         if(delegate != nil){
             delegate.onAlbumItemClick()

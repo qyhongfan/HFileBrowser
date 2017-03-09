@@ -29,19 +29,19 @@ class FileListCell: UITableViewCell {
     
     var coverView :UIImageView = {
         var view = UIImageView()
-        view.contentMode = .ScaleAspectFill
+        view.contentMode = .scaleAspectFill
         return view
     }()
     var nameLabel :UILabel = {
         var label = UILabel()
         label.textColor = UIColor(red: 60, green: 79, blue: 94, alpha: 1.0)
-        label.font = UIFont.systemFontOfSize(16)
+        label.font = UIFont.systemFont(ofSize: 16)
         return label
     }()
     var desLabel :UILabel = {
         var label = UILabel()
         label.textColor = UIColor(red:151,green: 151,blue: 151,alpha: 1.0)
-        label.font = UIFont.systemFontOfSize(14)
+        label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -56,14 +56,14 @@ class FileListCell: UITableViewCell {
         
     }
     
-    func setCell(path:String) {
+    func setCell(_ path:String) {
         self.imageView?.image = getCoverOfFile(path)
         self.textLabel?.text = FileHelper().getFileName(path)
-        self.textLabel?.textColor = UIColor.blackColor()
-        self.textLabel?.font = UIFont.systemFontOfSize(16)
+        self.textLabel?.textColor = UIColor.black
+        self.textLabel?.font = UIFont.systemFont(ofSize: 16)
     }
     
-    func getCoverOfFile(path:String) -> UIImage {
+    func getCoverOfFile(_ path:String) -> UIImage {
         let type = FileHelper().getFileType(path)
         switch type {
         case FileType.Folder:
@@ -83,16 +83,16 @@ class FileListCell: UITableViewCell {
         return UIImage()
     }
     
-    private func getCoverOfVideo(path:String) -> UIImage{
-        let videoURL = NSURL(fileURLWithPath: path)
-        let avAsset = AVAsset(URL: videoURL)
+    fileprivate func getCoverOfVideo(_ path:String) -> UIImage{
+        let videoURL = URL(fileURLWithPath: path)
+        let avAsset = AVAsset(url: videoURL)
         //生成视频截图
         let generator = AVAssetImageGenerator(asset: avAsset)
         generator.appliesPreferredTrackTransform = true
         let time = CMTimeMakeWithSeconds(0.0,600)
         var actualTime:CMTime = CMTimeMake(Int64(avAsset.duration.seconds/2),0)
-        let imageRef:CGImageRef = try! generator.copyCGImageAtTime(time, actualTime: &actualTime)
-        let frameImg = UIImage(CGImage: imageRef)
+        let imageRef:CGImage = try! generator.copyCGImage(at: time, actualTime: &actualTime)
+        let frameImg = UIImage(cgImage: imageRef)
         return frameImg
     }
 

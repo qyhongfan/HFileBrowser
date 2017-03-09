@@ -9,23 +9,23 @@
 import UIKit
 import AVFoundation
 import AVKit
-let HScreenWidth = UIScreen.mainScreen().bounds.width
-let HScreenHeight = UIScreen.mainScreen().bounds.height
+let HScreenWidth = UIScreen.main.bounds.width
+let HScreenHeight = UIScreen.main.bounds.height
 
-public class HFileBrowser: UIViewController {
+open class HFileBrowser: UIViewController {
 
     var path:String = ""
     var files = [String]()
     var emptyLabel:UILabel = {
         var label = UILabel()
         label.text = "文件夹为空"
-        label.textAlignment = .Center
-        label.textColor = UIColor.blackColor()
+        label.textAlignment = .center
+        label.textColor = UIColor.black
         return label
     }()
     
     var tableView :UITableView = {
-        var view = UITableView(frame:CGRectMake(0, 0, HScreenWidth, HScreenHeight),style: .Grouped)
+        var view = UITableView(frame:CGRect(x: 0, y: 0, width: HScreenWidth, height: HScreenHeight),style: .grouped)
         return view
     }()
     
@@ -39,7 +39,7 @@ public class HFileBrowser: UIViewController {
         }
         navigationItem.title = FileHelper().getFileName(path)
         do{
-            try files = NSFileManager.defaultManager().contentsOfDirectoryAtPath(path)
+            try files = FileManager.default.contentsOfDirectory(atPath: path)
             reloadTableView()
         }catch{
             
@@ -50,35 +50,35 @@ public class HFileBrowser: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
         self.view.addSubview(emptyLabel)
         self.navigationItem.title = FileHelper().getFileName(path)
-        tableView.registerClass(FileListCell.self, forCellReuseIdentifier: FileListCell.CellIdentifier)
-        emptyLabel.frame = CGRectMake(0, HScreenHeight/2 - 20, HScreenWidth, 20)
+        tableView.register(FileListCell.self, forCellReuseIdentifier: FileListCell.CellIdentifier)
+        emptyLabel.frame = CGRect(x: 0, y: HScreenHeight/2 - 20, width: HScreenWidth, height: 20)
     }
     
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     func reloadTableView(){
         if files.count == 0 {
-            emptyLabel.hidden = false
+            emptyLabel.isHidden = false
         }else{
-            emptyLabel.hidden = true
+            emptyLabel.isHidden = true
         }
         tableView.reloadData()
     }
 }
 
 extension HFileBrowser:UITableViewDelegate{
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let path = files[indexPath.row]
         if FileHelper().isDirectory("\(self.path)/\(path)") {
             self.navigationController?.pushViewController(HFileBrowser(path:"\(self.path)/\(path)",frame: self.view.bounds), animated: true)
@@ -90,7 +90,7 @@ extension HFileBrowser:UITableViewDelegate{
                 navigationController?.pushViewController(TextPreviewController(path:"\(self.path)/\(path)"), animated: true)
             }else if FileHelper().getFileType("\(self.path)/\(path)") == FileType.Video{
                 let playerVC = AVPlayerViewController()
-                playerVC.player = AVPlayer.init(playerItem: AVPlayerItem(URL: NSURL(fileURLWithPath: "\(self.path)/\(path)")))
+                playerVC.player = AVPlayer.init(playerItem: AVPlayerItem(url: URL(fileURLWithPath: "\(self.path)/\(path)")))
                 navigationController?.pushViewController(playerVC, animated: true)
             }else{
                 navigationController?.pushViewController(UnsupportPreviewController(path:"\(self.path)/\(path)"), animated: true)
@@ -98,27 +98,27 @@ extension HFileBrowser:UITableViewDelegate{
         }
     }
     
-    public func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
     
-    public func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let action = UITableViewRowAction(style: .Default,title: "删除"){ (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
-            let alertController = UIAlertController(title: "警告",message: "删除文件后无法找回，确认删除吗？",preferredStyle: .Alert)
-            let cancelAction = UIAlertAction(title: "取消", style: .Cancel, handler: { action in
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let action = UITableViewRowAction(style: .default,title: "删除"){ (action: UITableViewRowAction!, indexPath: IndexPath!) -> Void in
+            let alertController = UIAlertController(title: "警告",message: "删除文件后无法找回，确认删除吗？",preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: { action in
     
             })
-            let sureAction = UIAlertAction(title: "确定", style: .Default, handler: { action in
+            let sureAction = UIAlertAction(title: "确定", style: .default, handler: { action in
                 let fullpath = "\(self.path)/\(self.files[indexPath.row])"
                 if FileHelper().deleteFile(fullpath){
-                    self.files.removeAtIndex(indexPath.row)
-                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                    self.files.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
                 }
             })
             alertController.addAction(cancelAction)
             alertController.addAction(sureAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         }
         
         return [action]
@@ -128,24 +128,24 @@ extension HFileBrowser:UITableViewDelegate{
 
 extension HFileBrowser:UITableViewDataSource{
     
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return files.count
     }
     
-    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return FileListCell.CellHeight
     }
     
-    public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.1
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(FileListCell.CellIdentifier, forIndexPath: indexPath) as! FileListCell
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FileListCell.CellIdentifier, for: indexPath) as! FileListCell
         cell.setCell("\(self.path)/\(files[indexPath.row])")
         return cell
     }

@@ -12,8 +12,8 @@ class TextPreviewController: UIViewController {
     var filePath = ""
     var textView :UITextView = {
         var view = UITextView()
-        view.textColor = UIColor.blackColor()
-        view.editable = false
+        view.textColor = UIColor.black
+        view.isEditable = false
         return view
     }()
     
@@ -28,17 +28,17 @@ class TextPreviewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: .Plain, target: self, action: #selector(onEdit))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: .plain, target: self, action: #selector(onEdit))
         textView.frame = self.view.frame
         view.addSubview(textView)
-        let type = FileHelper().getFilePathExtension(filePath).lowercaseString
+        let type = FileHelper().getFilePathExtension(filePath).lowercased()
         if type == "plist" {
             let dic = NSDictionary(contentsOfFile:filePath)
             textView.text = dic?.description
         }else{
             var text = ""
             do {
-                try text = NSString(contentsOfFile: filePath,encoding: NSUTF8StringEncoding) as String
+                try text = NSString(contentsOfFile: filePath,encoding: String.Encoding.utf8.rawValue) as String
             } catch  {
                 
             }
@@ -47,27 +47,27 @@ class TextPreviewController: UIViewController {
     }
     
     func onEdit() {
-        textView.editable = true
-         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .Plain, target: self, action: #selector(onSave))
+        textView.isEditable = true
+         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .plain, target: self, action: #selector(onSave))
     }
     
     func onSave() {
-        textView.editable = false
+        textView.isEditable = false
         do {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: .Plain, target: self, action: #selector(onEdit))
-            try textView.text.writeToFile(self.filePath, atomically: true, encoding: NSUTF8StringEncoding)
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "编辑", style: .plain, target: self, action: #selector(onEdit))
+            try textView.text.write(toFile: self.filePath, atomically: true, encoding: String.Encoding.utf8)
         } catch let error as NSError {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .Plain, target: self, action: #selector(onSave))
-            let alertController = UIAlertController(title: "错误",message: "\(error.description)",preferredStyle: .Alert)
-            let errorAction = UIAlertAction(title: "知道啦", style: .Default, handler: nil)
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "保存", style: .plain, target: self, action: #selector(onSave))
+            let alertController = UIAlertController(title: "错误",message: "\(error.description)",preferredStyle: .alert)
+            let errorAction = UIAlertAction(title: "知道啦", style: .default, handler: nil)
             alertController.addAction(errorAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
             return
         }
-        let alertController = UIAlertController(title: "",message: "保存成功",preferredStyle: .Alert)
-        let sureAction = UIAlertAction(title: "确定", style: .Default, handler: nil)
+        let alertController = UIAlertController(title: "",message: "保存成功",preferredStyle: .alert)
+        let sureAction = UIAlertAction(title: "确定", style: .default, handler: nil)
         alertController.addAction(sureAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {

@@ -24,7 +24,7 @@ class ImagePreviewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         self.view.addSubview(preView)
         preView.frame = self.view.frame
     }
