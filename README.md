@@ -1,5 +1,9 @@
 # HFileBrowser
-纯代码实现沙盒文件目录结构，支持图片、视频、文本文件预览 
+纯代码实现沙盒文件目录结构，支持图片、视频、文本文件预览 ,支持swift2.3和swift3.0
+
+pod：
+swift2.3:   pod 'HFileBrowser’,:git => 'https://github.com/qyhongfan/HFileBrowser.git', branch: 'swift2.3'
+swift3.0:   pod 'HFileBrowser’,:git => 'https://github.com/qyhongfan/HFileBrowser.git', branch: 'swift3.0'
 
 OC调用：
 #import "HFileBrowser-Swift.h"
