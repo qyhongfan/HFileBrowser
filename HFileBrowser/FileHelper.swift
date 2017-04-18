@@ -104,7 +104,7 @@ class FileHelper: NSObject {
             let fileArray = fileManager.subpaths(atPath: path)
             if let fileArrayTmp = fileArray {
                 for pa in fileArrayTmp {
-                    if !deleteFileAtPath(pa){
+                    if !deleteFileAtPath("\(path)/\(pa)"){
                         return false
                     }
                 }
