@@ -59,6 +59,7 @@ open class HFileBrowser: UIViewController {
         self.navigationItem.title = FileHelper().getFileName(path)
         tableView.register(FileListCell.self, forCellReuseIdentifier: FileListCell.CellIdentifier)
         emptyLabel.frame = CGRect(x: 0, y: HScreenHeight/2 - 20, width: HScreenWidth, height: 20)
+        navigationController?.navigationBar.backgroundColor = UIColor.white
     }
     
     override open func didReceiveMemoryWarning() {
