@@ -114,6 +114,13 @@ extension HFileBrowser:UITableViewDelegate{
                 if FileHelper().deleteFile(fullpath){
                     self.files.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .fade)
+                }else{
+                    let alertController = UIAlertController(title: "警告",message: "文件删除时出错，请重试",preferredStyle: .alert)
+                    let cancelAction = UIAlertAction(title: "确定", style: .cancel, handler: { action in
+                        tableView.reloadData()
+                    })
+                    alertController.addAction(cancelAction)
+                    self.present(alertController, animated: true, completion: nil)
                 }
             })
             alertController.addAction(cancelAction)
