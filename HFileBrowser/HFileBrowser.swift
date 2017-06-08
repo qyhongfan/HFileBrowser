@@ -20,7 +20,7 @@ open class HFileBrowser: UIViewController {
         var label = UILabel()
         label.text = "文件夹为空"
         label.textAlignment = .center
-        label.textColor = UIColor.black
+        label.textColor = UIColor.gray
         return label
     }()
     

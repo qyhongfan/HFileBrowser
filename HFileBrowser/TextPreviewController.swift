@@ -16,10 +16,11 @@ class TextPreviewController: UIViewController {
         view.isEditable = false
         return view
     }()
-    
-    init(path:String) {
+    var isTypeFirst = false
+    init(path:String,isTypeFirst:Bool = false) {
         super.init(nibName: nil, bundle: nil)
         self.filePath = path
+        self.isTypeFirst = isTypeFirst
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,7 +33,7 @@ class TextPreviewController: UIViewController {
         textView.frame = self.view.frame
         view.addSubview(textView)
         let type = FileHelper().getFilePathExtension(filePath).lowercased()
-        if type == "plist" {
+        if type == "plist" || isTypeFirst {
             let dic = NSDictionary(contentsOfFile:filePath)
             textView.text = dic?.description
         }else{
