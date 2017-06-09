@@ -29,6 +29,14 @@ open class HFileBrowser: UIViewController {
         return view
     }()
     
+    func setData() {
+        do{
+            try files = FileManager.default.contentsOfDirectory(atPath: path)
+            reloadTableView()
+        }catch{
+        }
+    }
+    
     public init(path:String,frame:CGRect) {
         super.init(nibName: nil, bundle: nil)
         self.view.frame = frame
@@ -38,16 +46,16 @@ open class HFileBrowser: UIViewController {
             self.path = NSHomeDirectory()
         }
         navigationItem.title = FileHelper().getFileName(path)
-        do{
-            try files = FileManager.default.contentsOfDirectory(atPath: path)
-            reloadTableView()
-        }catch{
-            
-        }
+        setData()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setData()
     }
     
     open override func viewDidLoad() {
@@ -60,11 +68,30 @@ open class HFileBrowser: UIViewController {
         tableView.register(FileListCell.self, forCellReuseIdentifier: FileListCell.CellIdentifier)
         emptyLabel.frame = CGRect(x: 0, y: HScreenHeight/2 - 20, width: HScreenWidth, height: 20)
         navigationController?.navigationBar.backgroundColor = UIColor.white
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "添加", style: .plain, target: self, action: #selector(onAddFile))
+
     }
     
     override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func onAddFile() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let folderAction = UIAlertAction(title: "创建文件夹", style: .default, handler: { (_) in
+            self.present(AddNewFolderController(path:self.path), animated: true, completion: nil)
+        })
+        let fileAction = UIAlertAction(title: "创建新文件", style: .default, handler: { (_) in
+            self.present(AddNewFileController(path:self.path), animated: true, completion: nil)
+        })
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: { (_) in
+            
+        })
+        alertController.addAction(folderAction)
+        alertController.addAction(fileAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
     }
     
     func reloadTableView(){

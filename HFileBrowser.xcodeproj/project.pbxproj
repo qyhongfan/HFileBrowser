@@ -16,6 +16,8 @@
 		BF4835F81E6D491300EE18AB /* TextPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4835F01E6D491300EE18AB /* TextPreviewController.swift */; };
 		BF4835FC1E6D496400EE18AB /* FileIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF4835FB1E6D496400EE18AB /* FileIcon.xcassets */; };
 		BF4835FE1E6D549E00EE18AB /* HFileBrowserAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4835FD1E6D549E00EE18AB /* HFileBrowserAssets.swift */; };
+		BFC0C3A01EE98413007D4249 /* AddNewFileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC0C39F1EE98413007D4249 /* AddNewFileController.swift */; };
+		BFC0C3A21EE98643007D4249 /* AddNewFolderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC0C3A11EE98643007D4249 /* AddNewFolderController.swift */; };
 		BFE2C3661E6E5D320047BDB2 /* UnsupportPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE2C3651E6E5D320047BDB2 /* UnsupportPreviewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +33,8 @@
 		BF4835F01E6D491300EE18AB /* TextPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPreviewController.swift; sourceTree = "<group>"; };
 		BF4835FB1E6D496400EE18AB /* FileIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = FileIcon.xcassets; sourceTree = "<group>"; };
 		BF4835FD1E6D549E00EE18AB /* HFileBrowserAssets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HFileBrowserAssets.swift; sourceTree = "<group>"; };
+		BFC0C39F1EE98413007D4249 /* AddNewFileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFileController.swift; sourceTree = "<group>"; };
+		BFC0C3A11EE98643007D4249 /* AddNewFolderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFolderController.swift; sourceTree = "<group>"; };
 		BFE2C3651E6E5D320047BDB2 /* UnsupportPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsupportPreviewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +79,8 @@
 				BF4835E11E6D489B00EE18AB /* HFileBrowser.h */,
 				BF4835E21E6D489B00EE18AB /* Info.plist */,
 				BF4835FD1E6D549E00EE18AB /* HFileBrowserAssets.swift */,
+				BFC0C39F1EE98413007D4249 /* AddNewFileController.swift */,
+				BFC0C3A11EE98643007D4249 /* AddNewFolderController.swift */,
 			);
 			path = HFileBrowser;
 			sourceTree = "<group>";
@@ -163,10 +169,12 @@
 				BF4835F71E6D491300EE18AB /* ImagePreviewController.swift in Sources */,
 				BF4835F81E6D491300EE18AB /* TextPreviewController.swift in Sources */,
 				BFE2C3661E6E5D320047BDB2 /* UnsupportPreviewController.swift in Sources */,
+				BFC0C3A01EE98413007D4249 /* AddNewFileController.swift in Sources */,
 				BF4835FE1E6D549E00EE18AB /* HFileBrowserAssets.swift in Sources */,
 				BF4835F31E6D491300EE18AB /* AlbumView.swift in Sources */,
 				BF4835F61E6D491300EE18AB /* HFileBrowser.swift in Sources */,
 				BF4835F51E6D491300EE18AB /* FileListCell.swift in Sources */,
+				BFC0C3A21EE98643007D4249 /* AddNewFolderController.swift in Sources */,
 				BF4835F41E6D491300EE18AB /* FileHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

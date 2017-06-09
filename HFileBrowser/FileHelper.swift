@@ -141,4 +141,29 @@ class FileHelper: NSObject {
         }
     }
     
+    func createFile(_ path:String,name:String,fileData:Data) ->Bool{
+        let newPath = "\(path)/\(name)"
+        if fileManager.fileExists(atPath: newPath){
+            return false
+        }else{
+            fileManager.createFile(atPath: newPath, contents: fileData, attributes: nil)
+        }
+        return true
+    }
+    
+    func createFolder(_ path:String,name:String) ->Bool{
+        let newPath = "\(path)/\(name)"
+        if fileManager.fileExists(atPath: newPath){
+            return false
+        }else{
+            do {
+                try fileManager.createDirectory(atPath: newPath, withIntermediateDirectories: false, attributes: nil)
+            }
+            catch{
+                return false
+            }
+        }
+        return true
+    }
+    
 }
