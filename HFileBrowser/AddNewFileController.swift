@@ -68,7 +68,7 @@ class AddNewFileController: UIViewController {
         nameText.delegate = self
         cancelBtn.addTarget(self, action: #selector(onCancel), for: .touchUpInside)
         surelBtn.addTarget(self, action: #selector(onSure), for: .touchUpInside)
-        
+        nameText.becomeFirstResponder()
         nameLabel.frame = CGRect(x:23 ,y:60,width: 60,height: 30)
         nameText.frame = CGRect(x:23 + 60 ,y:60,width: UIScreen.main.bounds.size.width - 60 - 46,height: 30)
         contentText.frame = CGRect(x:23 ,y:110,width: UIScreen.main.bounds.size.width - 46,height: UIScreen.main.bounds.height - 380)

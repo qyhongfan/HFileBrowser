@@ -59,7 +59,7 @@ class AddNewFolderController: UIViewController {
         nameText.delegate = self
         cancelBtn.addTarget(self, action: #selector(onCancel), for: .touchUpInside)
         surelBtn.addTarget(self, action: #selector(onSure), for: .touchUpInside)
-        
+        nameText.becomeFirstResponder()
         nameLabel.frame = CGRect(x:23 ,y:60,width: 80,height: 30)
         nameText.frame = CGRect(x:23 + 80 ,y:60,width: UIScreen.main.bounds.size.width - 60 - 46,height: 30)
         cancelBtn.frame = CGRect(x:10 ,y:20,width: 40,height: 25)
