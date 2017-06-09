@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name                      = 'HFileBrowser'
     s.module_name               = 'HFileBrowser'
-    s.version                   = '0.2.0'
+    s.version                   = '0.3.1'
     s.summary                   = 'A Swift 2 file browser for iOS 8 and up'
     s.homepage                  = 'https://github.com/qyhongfan/HFileBrowser'
     s.license                   = 'MIT'
